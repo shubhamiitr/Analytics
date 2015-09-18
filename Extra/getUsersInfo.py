@@ -20,15 +20,11 @@ def convertParseDateToDisplayDate(date):
   utcdate = datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%fZ')
   return utcdate.strftime("%Y/%m/%d")
 
-# out = open('Users Info.csv', 'w')
-# out.write('{:s}, {:s}, {:s}, {:s}'.format('Username', 'Name', 'Email', 'Mobile'))
-
-out = open('usernames.csv', 'w')
-out.write('{:s}'.format('Username'))
-
+out = open('Users Info.csv', 'w')
+out.write('{:s}, {:s}, {:s}, {:s}'.format('Username', 'Name', 'Email', 'Mobile'))
 out.write('\n')
 
-def getUserInfo(username):
+def getUserInfoByName(username):
   params = urllib.urlencode({
     "where": json.dumps({
       "username": username
@@ -50,25 +46,8 @@ def getUserInfo(username):
   out.write('\n')
   return
 
-def getUsername(parseId):
-  endpoint = '/1/users/' + parseId;
-  connection.request('GET', endpoint, '', {
-    "X-Parse-Application-Id": "jrumkUT2jzvbFn7czsC5fQmFG5JIYSE4P7GJrlOG",
-    "X-Parse-REST-API-Key": "nJKpGXJMp6Y6RCzRAR6VtdI1A8BN1IdI4g7KJILU",
-  })
-  user = json.loads(connection.getresponse().read())
-  if user.has_key("username"):
-    out.write('{:s}'.format(user["username"]))
-    out.write('\n')
-  return
-
-# fp = open('usernames.txt', 'r')
-# usernames = fp.read().split('\n')
-# for username in usernames:
-#   getUserInfo(username)
-
-fp = open('userids.txt', 'r')
-userids = fp.read().split('\n')
-for userid in userids:
-  getUsername(userid)
+fp = open('usernames.txt', 'r')
+usernames = fp.read().split('\n')
+for username in usernames:
+  getUserInfoByName(username)
 fp.close()
